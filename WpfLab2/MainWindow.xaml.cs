@@ -20,9 +20,17 @@ namespace WpfLab2
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly InputWindow _inputWindow;
+        
         public MainWindow()
         {
+            _inputWindow = new InputWindow();
             InitializeComponent();
+        }
+
+        private void ShowInputButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            _inputWindow.Show();
         }
     }
 }
