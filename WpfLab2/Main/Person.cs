@@ -1,7 +1,7 @@
 ﻿using System;
 using WpfLab2.Zodiac;
 
-namespace WpfLab2;
+namespace WpfLab2.Main;
 
 public class Person
 {
@@ -35,9 +35,9 @@ public class Person
     public Person(string name, string surname, string email) : this(name, surname, email, DateTime.Today) {}
 
     /*
-    IsAdult - який повертає true, якщо особа старше 18 років
-    SunSign - традиційний західний сонячний знак цієї людини
-    ChineseSign - китайський астрологічний знак цієї людини
-    IsBirthday – який повертає true, якщо сьогодні день народження людини
-     */
+        IsAdult - який повертає true, якщо особа старше 18 років
+        SunSign - традиційний західний сонячний знак цієї людини
+        ChineseSign - китайський астрологічний знак цієї людини
+        IsBirthday – який повертає true, якщо сьогодні день народження людини
+    */
 }
