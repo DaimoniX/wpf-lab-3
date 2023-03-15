@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Windows;
+using WpfLab2.Main;
 
 namespace WpfLab2.Input;
 
 public partial class InputWindow : Window
 {
     private readonly InputViewModel _inputViewModel;
+    public event EventHandler<Person>? OnPersonCreated;
     
     public InputWindow()
     {
@@ -13,13 +15,30 @@ public partial class InputWindow : Window
         InitializeComponent();
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+    private async void Button_Click(object sender, RoutedEventArgs e)
     {
-        if (_inputViewModel.BirthDate.IsValidBirthDate())
+        if (_inputViewModel.BirthDate is null)
         {
-            if(_inputViewModel.BirthDate.IsBirthdayToday())
+            MessageBox.Show("", "Invalid date", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+        
+        if (_inputViewModel.BirthDate.Value.IsValidBirthDate())
+        {
+            if(_inputViewModel.BirthDate.Value.IsBirthdayToday())
                 MessageBox.Show("Happy birthday!", "Congratulations", MessageBoxButton.OK, MessageBoxImage.Information);
-            Close();
+            try
+            {
+                var person = await _inputViewModel.Calculate();
+                OnPersonCreated?.Invoke(this, person);
+                OnPersonCreated = null;
+                Close();
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show("Failed to create person", "Invalid input", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
         }
         else
         {

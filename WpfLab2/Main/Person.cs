@@ -5,10 +5,10 @@ namespace WpfLab2.Main;
 
 public class Person
 {
-    public string Name { private set; get; }
-    public string Surname { private set; get; }
-    public string Email { private set; get; }
-    public DateTime BirthDate { private set; get; }
+    public string Name { get; }
+    public string Surname { get; }
+    public string Email { get; }
+    public DateTime BirthDate { get; }
     
     public bool IsAdult { get; }
     public SunSign SunSign { get; }
@@ -34,10 +34,8 @@ public class Person
 
     public Person(string name, string surname, string email) : this(name, surname, email, DateTime.Today) {}
 
-    /*
-        IsAdult - який повертає true, якщо особа старше 18 років
-        SunSign - традиційний західний сонячний знак цієї людини
-        ChineseSign - китайський астрологічний знак цієї людини
-        IsBirthday – який повертає true, якщо сьогодні день народження людини
-    */
+    public override string ToString()
+    {
+        return $"{Name} {Surname}{Environment.NewLine}{ChineseSign}{Environment.NewLine}{SunSign}";
+    }
 }

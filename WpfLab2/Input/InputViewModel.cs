@@ -1,27 +1,39 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using WpfLab2.Main;
 
 namespace WpfLab2.Input;
 
 public class InputViewModel : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
-    
-    private string _name = string.Empty;
-    private string _surname = string.Empty;
-    private string _email = string.Empty;
-    private bool _allFieldsSet = false;
-    private DateTime? _birthDate = null;
 
-    public DateTime BirthDate
+    private string _name;
+    private string _surname;
+    private string _email;
+	private bool _isReady;
+    private bool _allFieldsSet;
+    private DateTime? _birthDate;
+    
+    public InputViewModel()
     {
-        get => _birthDate ?? DateTime.Today;
+        _name = string.Empty;
+        _surname = string.Empty;
+        _email = string.Empty;
+        _isReady = true;
+        _allFieldsSet = false;
+        _birthDate = null;
+    }
+
+    public DateTime? BirthDate
+    {
+        get => _birthDate;
         set
         {
-            if (value == _birthDate) return;
-            _birthDate = value;
-            OnPropertyChanged();
+            SetField(ref _birthDate, value);
             CheckAllFields();
         }
     }
@@ -31,9 +43,7 @@ public class InputViewModel : INotifyPropertyChanged
         get => _name;
         set
         {
-            if (value == _name) return;
-            _name = value ?? throw new ArgumentNullException(nameof(value));
-            OnPropertyChanged();
+            SetField(ref _name, value);
             CheckAllFields();
         }
     }
@@ -43,9 +53,7 @@ public class InputViewModel : INotifyPropertyChanged
         get => _surname;
         set
         {
-            if (value == _surname) return;
-            _surname = value ?? throw new ArgumentNullException(nameof(value));
-            OnPropertyChanged();
+            SetField(ref _surname, value);
             CheckAllFields();
         }
     }
@@ -55,9 +63,7 @@ public class InputViewModel : INotifyPropertyChanged
         get => _email;
         set
         {
-            if (value == _email) return;
-            _email = value ?? throw new ArgumentNullException(nameof(value));
-            OnPropertyChanged();
+            SetField(ref _email, value);
             CheckAllFields();
         }
     }
@@ -65,21 +71,50 @@ public class InputViewModel : INotifyPropertyChanged
     public bool AllFieldsSet
     {
         get => _allFieldsSet;
-        private set
-        {
-            _allFieldsSet = value;
-            OnPropertyChanged();
-        }
+        private set => SetField(ref _allFieldsSet, value);
     }
+
+    public bool IsReady
+	{
+		get => _isReady;
+		set
+		{
+            SetField(ref _isReady, value);
+            IsBusy = true;
+		}
+	}
+
+    public bool IsBusy
+    {
+        get => !IsReady;
+        private set => OnPropertyChanged();
+    }
+	
+	public async Task<Person> Calculate()
+    {
+        if (BirthDate is null) throw new ArgumentException("Invalid date");
+		IsReady = false;
+		var person = new Person(Name, Surname, Email, BirthDate.Value);
+        await Task.Delay(1000);
+        IsReady = true;
+		return person;
+	}
 
     private void CheckAllFields()
     {
         AllFieldsSet = _name != string.Empty && _surname != string.Empty && _email != string.Empty && _birthDate != null;
-        System.Diagnostics.Debug.WriteLine(_allFieldsSet);
     }
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    
+    private bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
     }
 }

@@ -3,10 +3,36 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfLab2"
+        xmlns:main="clr-namespace:WpfLab2.Main"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=main:MainViewModel}"
         Title="MainWindow" Height="300" Width="400">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </Window.Resources>
     <Grid>
-        <Button Content="Show input" Click="ShowInputButton_OnClick"></Button>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1" Grid.Row="1" IsEnabled="{Binding InputWindowHidden}">
+            <Button Content="Show input window" Click="ShowInputButton_OnClick" />
+            <StackPanel Visibility="{Binding Path=IsSet, Converter={StaticResource BoolToVis}}">
+                <TextBlock Text="{Binding Person.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=Name: {0}, FallbackValue=''}" />
+                <TextBlock Text="{Binding Person.Surname, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=Surname: {0}, FallbackValue=''}" />
+                <TextBlock Text="{Binding Person.Email, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=Email: {0}, FallbackValue=''}" />
+                <TextBlock Text="{Binding Person.BirthDate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=Birthday: {0:dd/MM/yyyy}, FallbackValue=''}" />
+                <TextBlock Text="{Binding Person.IsAdult, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=Is adult: {0}, FallbackValue=''}" />
+                <TextBlock Text="{Binding Person.IsBirthday, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=Is birthday: {0}, FallbackValue=''}" />
+                <TextBlock Text="{Binding Person.SunSign, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=SunSign: {0}, FallbackValue=''}" />
+                <TextBlock Text="{Binding Person.ChineseSign, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=ChineseSign: {0}, FallbackValue=''}" />
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
