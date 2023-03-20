@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using WpfLab2.Main;
 
@@ -29,7 +30,7 @@ public partial class InputWindow : Window
                 MessageBox.Show("Happy birthday!", "Congratulations", MessageBoxButton.OK, MessageBoxImage.Information);
             try
             {
-                var person = await _inputViewModel.Calculate();
+                var person = await Task.Run(() => _inputViewModel.Calculate());
                 OnPersonCreated?.Invoke(this, person);
                 OnPersonCreated = null;
                 Close();
