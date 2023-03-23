@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfLab2", "WpfLab2\WpfLab2.csproj", "{C8DC65F0-C351-4FA9-A58A-E8AE8C496E0B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfLab3", "WpfLab3\WpfLab3.csproj", "{C8DC65F0-C351-4FA9-A58A-E8AE8C496E0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

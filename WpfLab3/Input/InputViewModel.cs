@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using WpfLab2.Exceptions;
 using WpfLab2.Main;
 
 namespace WpfLab2.Input;
@@ -92,7 +93,7 @@ public class InputViewModel : INotifyPropertyChanged
 	
 	public async Task<Person> Calculate()
     {
-        if (BirthDate is null) throw new ArgumentException("Invalid date");
+        if (BirthDate is null) throw new InvalidBirthDateException();
 		IsReady = false;
 		var person = new Person(Name, Surname, Email, BirthDate.Value);
         await Task.Delay(1000);
